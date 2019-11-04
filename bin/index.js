@@ -1,1 +1,1 @@
-module.exports = require("../scripts/index");
+require("../scripts/index");
