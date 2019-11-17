@@ -10,16 +10,16 @@ module.exports = function getBabelConfig(modules) {
       "@babel/preset-react",
     ],
     "plugins": [
-      "@babel/plugin-transform-runtime",
       [
         "@babel/plugin-proposal-decorators",
         {
-          "decoratorsBeforeExport": false,
+          legacy: true,
         },
       ],
+      "@babel/plugin-transform-runtime",
       "@babel/plugin-syntax-dynamic-import",
       "@babel/plugin-syntax-import-meta",
-      "@babel/plugin-proposal-class-properties",
+      ["@babel/plugin-proposal-class-properties", { loose: true }],
       "@babel/plugin-proposal-json-strings",
       "@babel/plugin-proposal-function-sent",
       "@babel/plugin-proposal-export-namespace-from",
