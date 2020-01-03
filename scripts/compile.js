@@ -1,10 +1,15 @@
 const gulp = require("gulp");
 const path = require("path");
 const merge2 = require("merge2");
+const through2 = require("through2");
 const babel = require("gulp-babel");
 const getBabelConfig = require("./babelConfig");
+const ts = require("gulp-typescript");
+const tsConfig = require("./getTSCommonConfig")();
+const tsDefaultReporter = ts.reporter.defaultReporter();
 
 const root = process.cwd();
+// const root = "D:/project/cbd/packages/bmap";
 const src = path.resolve(root, "src");
 
 function compile(modules) {
@@ -19,6 +24,13 @@ function compile(modules) {
     .pipe(babel(getBabelConfig(modules)))
     .pipe(gulp.dest(dest));
   streams.push(js);
+
+  /* ts */
+  const tsStream = gulp.src([`${src}/**/*.ts`, `${src}/**/*.tsx`, `${src}/**/*.d.ts`])
+    .pipe(ts(tsConfig, tsDefaultReporter))
+    .pipe(babel(getBabelConfig(modules)))
+    .pipe(gulp.dest(dest));
+  streams.push(tsStream);
 
 
   return merge2(streams);
