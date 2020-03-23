@@ -39,7 +39,7 @@
     "gulp-babel-minify": "^0.5.1",
     "gulp-typescript": "^6.0.0-alpha.1",
     "merge2": "^1.3.0",
-    "minimist": "^1.2.0",
+    "minimist": "^1.2.5",
     "through2": "^3.0.1",
     "typescript": "^3.7.4"
   }
