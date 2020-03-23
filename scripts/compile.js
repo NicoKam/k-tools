@@ -7,13 +7,14 @@ const getBabelConfig = require("./babelConfig");
 const ts = require("gulp-typescript");
 const tsConfig = require("./getTSCommonConfig")();
 const tsDefaultReporter = ts.reporter.defaultReporter();
+const argv = require("minimist")(process.argv.slice(2));
 
 const root = process.cwd();
 // const root = "D:/project/cbd/packages/bmap";
-const src = path.resolve(root, "src");
 
 function compile(modules) {
   const streams = [];
+  const src =  path.resolve(root, (argv.src || "src").replace(/(\/|\\|\.)/g,""));
   const dest = path.resolve(root, modules === false ? "es" : "lib");
   const assets = gulp
     .src([`${src}/**/*.@(png|svg|less|d.ts)`])
