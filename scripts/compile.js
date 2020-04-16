@@ -10,7 +10,6 @@ const tsDefaultReporter = ts.reporter.defaultReporter();
 const argv = require("minimist")(process.argv.slice(2));
 
 const root = process.cwd();
-// const root = "D:/project/cbd/packages/bmap";
 
 function compile(modules) {
   const streams = [];
@@ -29,6 +28,7 @@ function compile(modules) {
   /* ts */
   const tsStream = gulp.src([`${src}/**/*.ts`, `${src}/**/*.tsx`, `${src}/**/*.d.ts`])
     .pipe(ts(tsConfig, tsDefaultReporter))
+    .pipe(gulp.dest(dest))
     .pipe(babel(getBabelConfig(modules)))
     .pipe(gulp.dest(dest));
   streams.push(tsStream);
