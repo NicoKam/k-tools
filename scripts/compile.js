@@ -9,27 +9,33 @@ const tsConfig = require("./getTSCommonConfig")();
 const tsDefaultReporter = ts.reporter.defaultReporter();
 const argv = require("minimist")(process.argv.slice(2));
 
-const root = process.cwd();
-// const root = "D:/project/cbd/packages/bmap";
+const { 'babel-runtime': babelRuntime = true } = argv;
 
-function compile(modules) {
+const root = process.cwd();
+// const root = "D:/project/class-prefix";
+
+function compile(moduleMode) {
   const streams = [];
   const src =  path.resolve(root, (argv.src || "src").replace(/(\/|\\|\.)/g,""));
-  const dest = path.resolve(root, modules === false ? "es" : "lib");
+  const dest = path.resolve(root, moduleMode === false ? "es" : "lib");
+  const babelConfig = getBabelConfig({
+    module: moduleMode,
+    babelRuntime,
+  });
   const assets = gulp
     .src([`${src}/**/*.@(png|svg|less|d.ts)`])
     .pipe(gulp.dest(dest));
   streams.push(assets);
   /* js */
   const js = gulp.src([`${src}/**/*.js`, `${src}/**/*.jsx`])
-    .pipe(babel(getBabelConfig(modules)))
+    .pipe(babel(babelConfig))
     .pipe(gulp.dest(dest));
   streams.push(js);
 
   /* ts */
   const tsStream = gulp.src([`${src}/**/*.ts`, `${src}/**/*.tsx`, `${src}/**/*.d.ts`])
     .pipe(ts(tsConfig, tsDefaultReporter))
-    .pipe(babel(getBabelConfig(modules)))
+    .pipe(babel(babelConfig))
     .pipe(gulp.dest(dest));
   streams.push(tsStream);
 
