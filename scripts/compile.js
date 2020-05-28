@@ -19,7 +19,7 @@ function compile(moduleMode) {
   const src =  path.resolve(root, (argv.src || "src").replace(/(\/|\\|\.)/g,""));
   const dest = path.resolve(root, moduleMode === false ? "es" : "lib");
   const babelConfig = getBabelConfig({
-    module: moduleMode,
+    modules: moduleMode,
     babelRuntime,
   });
   const assets = gulp
@@ -35,6 +35,7 @@ function compile(moduleMode) {
   /* ts */
   const tsStream = gulp.src([`${src}/**/*.ts`, `${src}/**/*.tsx`, `${src}/**/*.d.ts`])
     .pipe(ts(tsConfig, tsDefaultReporter))
+    .pipe(gulp.dest(dest))
     .pipe(babel(babelConfig))
     .pipe(gulp.dest(dest));
   streams.push(tsStream);
