@@ -8,7 +8,7 @@
   "main": "scripts/index.js",
   "scripts": {
     "test": "gulp -f scripts/compile.js compile",
-    "pub": "npm publish --registry=https://registry.npmjs.org/"
+    "pub": "npm publish --registry=https://registry.npmjs.org/ && git push"
   },
   "author": "Kam",
   "license": "MIT",
