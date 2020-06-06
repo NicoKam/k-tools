@@ -1,7 +1,6 @@
 const gulp = require("gulp");
 const path = require("path");
 const merge2 = require("merge2");
-const through2 = require("through2");
 const babel = require("gulp-babel");
 const getBabelConfig = require("./babelConfig");
 const ts = require("gulp-typescript");

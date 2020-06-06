@@ -1,34 +1,23 @@
 const fs = require('fs');
-const path = require('path');
+const { resolve } = require('path');
 const chalk = require('chalk');
 const webpack = require('webpack');
-// const Config = require('webpack-chain');
-const webpackConfig = require('../config/webpack.config.js');
+const getWebpackConfig = require('../config/webpackConfig.js');
+const argv = require('minimist')(process.argv.slice(2));
 
-const { resolve } = path;
+const cwd = process.cwd();
 
-const cwd = 'D:/project/gts-defc/test-component';
-// const cwd = process.cwd();
-
-// const chain = new Config(webpackConfig);
-
-// chain.entry('main').clear().add(resolve(cwd, 'src/index'));
-// chain.output.path(resolve(cwd, 'dist')).filename('[name].bundle.js');
-// chain.mode('production');
-
-// console.log(chain.toConfig());
-
-webpackConfig.entry.main = resolve(cwd, 'src/index');
-webpackConfig.output.path = resolve(cwd, 'dist');
-webpackConfig.resolve.modules = [resolve(__dirname, 'node_modules'), resolve(cwd, 'node_modules')];
-webpackConfig.externals = {
-  react: 'react',
-  'prop-types': 'prop-types',
-};
-webpackConfig.mode = 'development';
+const webpackConfig = getWebpackConfig({
+  name: argv.name,
+  cwd: cwd,
+  externals: {
+    react: 'react',
+    'prop-types': 'prop-types',
+  },
+});
 
 function createIfNotExists(dirName) {
-  const dir = path.resolve(cwd, dirName);
+  const dir = resolve(cwd, dirName);
   if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir);
   }
@@ -92,4 +81,4 @@ function run() {
   });
 }
 
-run();
+module.exports.default = run;
