@@ -1,31 +1,39 @@
-module.exports = function getBabelConfig({ modules, babelRuntime }) {
+module.exports = function getBabelConfig({ esm, babelRuntime }) {
+  const plugins = [
+    require.resolve('@babel/plugin-transform-member-expression-literals'),
+    require.resolve('@babel/plugin-transform-object-assign'),
+    require.resolve('@babel/plugin-transform-property-literals'),
+    require.resolve('@babel/plugin-transform-spread'),
+    require.resolve('@babel/plugin-transform-template-literals'),
+    require.resolve('@babel/plugin-proposal-export-default-from'),
+    require.resolve('@babel/plugin-proposal-export-namespace-from'),
+    require.resolve('@babel/plugin-proposal-object-rest-spread'),
+    require.resolve('@babel/plugin-proposal-class-properties'),
+  ];
+  if (babelRuntime) {
+    plugins.push([
+      require.resolve('@babel/plugin-transform-runtime'),
+      {
+        helpers: false,
+      },
+    ]);
+  }else{
+    plugins.push([
+      require.resolve('babel-plugin-transform-async-to-promises'),
+    ]);
+  }
   return {
     presets: [
       [
-        '@babel/preset-env',
+        require.resolve('@babel/preset-env'),
         {
-          modules,
+          modules: esm ? false : 'cjs',
+          exclude: ['transform-typeof-symbol'],
+          loose: true,
         },
       ],
-      '@babel/preset-react',
+      require.resolve(`@babel/preset-react`),
     ],
-    plugins: [
-      [
-        '@babel/plugin-proposal-decorators',
-        {
-          legacy: true,
-        },
-      ],
-
-      ...(babelRuntime ? ['@babel/plugin-transform-runtime'] : []),
-      '@babel/plugin-syntax-dynamic-import',
-      '@babel/plugin-syntax-import-meta',
-      ['@babel/plugin-proposal-class-properties', { loose: true }],
-      '@babel/plugin-proposal-json-strings',
-      '@babel/plugin-proposal-function-sent',
-      '@babel/plugin-proposal-export-namespace-from',
-      '@babel/plugin-proposal-numeric-separator',
-      '@babel/plugin-proposal-throw-expressions',
-    ],
+    plugins,
   };
 };

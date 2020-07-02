@@ -57,3 +57,11 @@ getCompilerOptions.getConfigFilePath = function() {
 };
 
 module.exports = getCompilerOptions;
+
+module.exports.getConfigPath = function(){
+  let configFilePath = getConfigFilePath();
+  if (fs.existsSync(configFilePath)) {
+    return configFilePath;
+  }
+  return getTemplateConfigFilePath('tsconfig.json');
+}
