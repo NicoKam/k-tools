@@ -1,45 +1,69 @@
-const gulp = require("gulp");
-const path = require("path");
-const merge2 = require("merge2");
-const through2 = require("through2");
-const babel = require("gulp-babel");
-const getBabelConfig = require("./babelConfig");
-const ts = require("gulp-typescript");
-const tsConfig = require("./getTSCommonConfig")();
+const gulp = require('gulp');
+const path = require('path');
+const merge2 = require('merge2');
+const babel = require('gulp-babel');
+const del = require('del');
+const getBabelConfig = require('./babelConfig');
+const ts = require('gulp-typescript');
+const getTsConfig = require('./getTSCommonConfig');
+const tsConfig = getTsConfig();
 const tsDefaultReporter = ts.reporter.defaultReporter();
-const argv = require("minimist")(process.argv.slice(2));
+const argv = require('minimist')(process.argv.slice(2));
+
+const { 'babel-runtime': babelRuntime = true, esm = true } = argv;
 
 const root = process.cwd();
 
-function compile(modules) {
+// const root = "D:/project/class-prefix";
+
+async function clearTargetDir() {
+  await del('lib/**');
+  await del('es/**');
+  await del('dist/**');
+}
+
+function compile(esm) {
   const streams = [];
-  const src =  path.resolve(root, (argv.src || "src").replace(/(\/|\\|\.)/g,""));
-  const dest = path.resolve(root, modules === false ? "es" : "lib");
+  const src = path.resolve(root, (argv.src || 'src').replace(/(\/|\\|\.)/g, ''));
+  const dest = path.resolve(root, esm ? 'es/' : 'lib/');
+  const babelConfig = getBabelConfig({
+    esm,
+    babelRuntime,
+  });
   const assets = gulp
     .src([`${src}/**/*.@(png|svg|less|d.ts)`])
     .pipe(gulp.dest(dest));
   streams.push(assets);
   /* js */
   const js = gulp.src([`${src}/**/*.js`, `${src}/**/*.jsx`])
-    .pipe(babel(getBabelConfig(modules)))
+    .pipe(babel(babelConfig))
     .pipe(gulp.dest(dest));
   streams.push(js);
 
   /* ts */
-  const tsStream = gulp.src([`${src}/**/*.ts`, `${src}/**/*.tsx`, `${src}/**/*.d.ts`])
-    .pipe(ts(tsConfig, tsDefaultReporter))
-    .pipe(gulp.dest(dest))
-    .pipe(babel(getBabelConfig(modules)))
-    .pipe(gulp.dest(dest));
-  streams.push(tsStream);
+  let tsProject = ts.createProject(getTsConfig.getConfigPath(), {
+    module: esm ? 'esnext' : 'commonjs',
+    declaration: true,
+  });
+  const tsResult = gulp.src([`${src}/**/*.ts`, `${src}/**/*.tsx`, `${src}/**/*.d.ts`])
+    .pipe(tsProject());
+  // .pipe(ts({ ...tsConfig, module: modules ? 'esnext' : 'commonjs' }, tsDefaultReporter))
+  // .pipe(gulp.dest(dest))
 
+
+  streams.push(tsResult.js
+    .pipe(babel(babelConfig))
+    .pipe(gulp.dest(dest)));
+  streams.push(tsResult.dts
+    .pipe(gulp.dest(dest)));
 
   return merge2(streams);
 };
 
 
-module.exports.default = (cb = () => null) => {
+module.exports.default = async (cb = () => null) => {
+  await clearTargetDir();
   compile();
-  compile(false);
+  if (esm) compile(true);
   cb();
 };
