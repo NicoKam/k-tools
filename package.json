@@ -8,6 +8,8 @@
   "main": "scripts/index.js",
   "scripts": {
     "test": "gulp -f scripts/compile.js compile",
+    "ppub": "npm version patch && npm run pub",
+    "mpub": "npm version minor && npm run pub",
     "pub": "npm publish --registry=https://registry.npmjs.org/ && git push"
   },
   "author": "Kam",
