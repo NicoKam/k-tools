@@ -17,7 +17,8 @@
     "noUnusedLocals": true,
     "allowJs": false,
     "noImplicitThis": false,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "esModuleInterop": true
   },
   "include": ["./src", "./typings/"],
   "typings": "./typings/index.d.ts",

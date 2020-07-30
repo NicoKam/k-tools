@@ -6,15 +6,15 @@ const del = require('del');
 const getBabelConfig = require('./babelConfig');
 const ts = require('gulp-typescript');
 const getTsConfig = require('./getTSCommonConfig');
-const tsConfig = getTsConfig();
-const tsDefaultReporter = ts.reporter.defaultReporter();
+// const tsConfig = getTsConfig();
+// const tsDefaultReporter = ts.reporter.defaultReporter();
 const argv = require('minimist')(process.argv.slice(2));
 
 const { 'babel-runtime': babelRuntime = true, esm = true } = argv;
 
 const root = process.cwd();
 
-// const root = "D:/project/class-prefix";
+// const root = "/Users/whm/project/cbd-group/aliyun-gts-whale-front/packages/pagination";
 
 async function clearTargetDir() {
   await del('lib/**');
@@ -40,9 +40,10 @@ function compile(esm) {
     .pipe(gulp.dest(dest));
   streams.push(js);
 
+
   /* ts */
-  let tsProject = ts.createProject(getTsConfig.getConfigPath(), {
-    module: esm ? 'esnext' : 'commonjs',
+  let tsProject = ts.createProject(getTsConfig.getConfigPath(root), {
+    // module: esm ? 'esnext' : 'commonjs',
     declaration: true,
   });
   const tsResult = gulp.src([`${src}/**/*.ts`, `${src}/**/*.tsx`, `${src}/**/*.d.ts`])

@@ -5,8 +5,8 @@ const path = require('path');
 
 const cwd = process.cwd();
 
-function getConfigFilePath() {
-  return path.join(cwd, 'tsconfig.json');
+function getConfigFilePath(root = cwd) {
+  return path.join(root, 'tsconfig.json');
 }
 
 function getTemplateConfigFilePath(fileName) {
@@ -58,8 +58,8 @@ getCompilerOptions.getConfigFilePath = function() {
 
 module.exports = getCompilerOptions;
 
-module.exports.getConfigPath = function(){
-  let configFilePath = getConfigFilePath();
+module.exports.getConfigPath = function(root = cwd){
+  let configFilePath = getConfigFilePath(root);
   if (fs.existsSync(configFilePath)) {
     return configFilePath;
   }
