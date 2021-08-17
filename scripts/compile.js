@@ -19,7 +19,7 @@ const root = process.cwd();
 async function clearTargetDir() {
   await del('lib/**');
   await del('esm/**');
-  await del('dist/**');
+  // await del('dist/**');
 }
 
 function compile(esm) {
