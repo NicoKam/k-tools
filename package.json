@@ -1,6 +1,6 @@
 {
   "name": "k-tools",
-  "version": "1.0.0-beta.1",
+  "version": "1.0.0-beta.2",
   "description": "A toolbox of React component",
   "bin": {
     "k-tools": "bin/index.js"
