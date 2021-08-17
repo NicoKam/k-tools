@@ -57,21 +57,7 @@ function getWebpackConfig(customConfig = {}) {
                       resolve(currentNodeModulesPath, '@babel/preset-typescript'),
                     ],
                     plugins: [
-                      [
-                        resolve(currentNodeModulesPath, '@babel/plugin-proposal-decorators'),
-                        {
-                          legacy: true,
-                        },
-                      ],
                       // "@babel/plugin-transform-runtime",
-                      resolve(currentNodeModulesPath, '@babel/plugin-syntax-dynamic-import'),
-                      resolve(currentNodeModulesPath, '@babel/plugin-syntax-import-meta'),
-                      [resolve(currentNodeModulesPath, '@babel/plugin-proposal-class-properties'), { loose: true }],
-                      resolve(currentNodeModulesPath, '@babel/plugin-proposal-json-strings'),
-                      resolve(currentNodeModulesPath, '@babel/plugin-proposal-function-sent'),
-                      resolve(currentNodeModulesPath, '@babel/plugin-proposal-export-namespace-from'),
-                      resolve(currentNodeModulesPath, '@babel/plugin-proposal-numeric-separator'),
-                      resolve(currentNodeModulesPath, '@babel/plugin-proposal-throw-expressions'),
                       [
                         resolve(currentNodeModulesPath, 'babel-plugin-import'),
                         {

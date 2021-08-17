@@ -10,7 +10,7 @@
     "jsx": "react",
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",
-    "rootDirs": ["./src", "./typings"],
+    "rootDirs": ["./src"],
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,
     "suppressImplicitAnyIndexErrors": true,
@@ -20,8 +20,7 @@
     "experimentalDecorators": true,
     "esModuleInterop": true
   },
-  "include": ["./src", "./typings/"],
-  "typings": "./typings/index.d.ts",
+  "include": ["./src"],
   "exclude": [
     "node_modules",
     "build",
