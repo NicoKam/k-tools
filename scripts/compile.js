@@ -14,18 +14,18 @@ const { 'babel-runtime': babelRuntime = true, esm = true } = argv;
 
 const root = process.cwd();
 
-// const root = "/Users/whm/project/cbd-group/aliyun-gts-whale-front/packages/pagination";
+// const root = "/Users/whm/project/cbd-group/aliyun-gts-whale-front/packagmpagination";
 
 async function clearTargetDir() {
   await del('lib/**');
-  await del('es/**');
+  await del('esm/**');
   await del('dist/**');
 }
 
 function compile(esm) {
   const streams = [];
   const src = path.resolve(root, (argv.src || 'src').replace(/(\/|\\|\.)/g, ''));
-  const dest = path.resolve(root, esm ? 'es/' : 'lib/');
+  const dest = path.resolve(root, esm ? 'esm/' : 'lib/');
   const babelConfig = getBabelConfig({
     esm,
     babelRuntime,
