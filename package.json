@@ -12,6 +12,9 @@
     "mpub": "npm version minor && npm run pub",
     "pub": "npm publish && git push"
   },
+  "repository": {
+    "url": "https://github.com/NicoKam/k-tools"
+  },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
